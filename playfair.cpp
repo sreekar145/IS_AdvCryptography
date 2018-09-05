@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 			m.push_back(z);
 		//for(int i=0;i<m.size();i=i+1)
 		//	cout<<m[i];
-		cout<<"---Encryption---\n";
+				cout<<"---Encryption---\n";
 		for(int i=0;i<m.size();i=i+2)
 		{
 			f.ch=m[i];
@@ -74,24 +74,95 @@ int main(int argc, char** argv)
 				l=temp;
 				if(m[i]==f.ch)
 				{
-					   cout<<key[f.r][l.c]<<key[l.r][f.c];	
+					   //cout<<key[f.r][l.c]<<key[l.r][f.c];
+					   enc.push_back(key[f.r][l.c]);
+					   enc.push_back(key[l.r][f.c]);
+					   	
 				}
 				else
 				{
-					 cout<<key[l.r][f.c]<<key[f.r][l.c];
+					 //cout<<key[l.r][f.c]<<key[f.r][l.c];
+					 enc.push_back(key[l.r][f.c]);
+					 enc.push_back(key[f.r][l.c]);
 				}
 				
 			}
 			if(f.r==l.r)
 			{
-				cout<<key[(f.r+1)%5][f.c]<<key[(l.r+1)%5][l.c];
+				//cout<<key[f.r][(f.c+1)%5]<<key[l.r][(l.c+1)%5];
+				enc.push_back(key[f.r][(f.c+1)%5]);
+				enc.push_back(key[l.r][(l.c+1)%5]);
 			}
 			if(f.c==l.c)
 			{
-				cout<<key[f.r][(f.c+1)%5]<<key[l.r][(l.c+1)%5];
+				
+				//cout<<key[(f.r+1)%5][f.c]<<key[(l.r+1)%5][l.c];
+				enc.push_back(key[(f.r+1)%5][f.c]);
+				enc.push_back(key[(l.r+1)%5][l.c]);
 			}
 			
 		}
+		for(int i=0;i<enc.size();i++)
+			cout<<enc[i];
+		
+		
+		cout<<"\n---Decryption---\n";
+		for(int i=0;i<enc.size();i=i+2)
+		{
+			f.ch=enc[i];
+			l.ch=enc[i+1];
+			for(int j=0;j<26;j++)
+			{
+				if(tab[j].ch==f.ch)
+				{
+					f.r=tab[j].r;
+					f.c=tab[j].c;
+				}
+				else if((tab[j].ch==l.ch))
+				{
+					l.r=tab[j].r;
+					l.c=tab[j].c;
+				}
+			}
+			if(f.r!=l.r && f.c!=l.c)
+			{
+				temp=f;
+				f=l;
+				l=temp;
+				if(enc[i]==f.ch)
+				{
+					   //cout<<key[f.r][l.c]<<key[l.r][f.c];
+					   dec.push_back(key[f.r][l.c]);
+					   dec.push_back(key[l.r][f.c]);
+					   	
+				}
+				else
+				{
+					 //cout<<key[l.r][f.c]<<key[f.r][l.c];
+					 dec.push_back(key[l.r][f.c]);
+					 dec.push_back(key[f.r][l.c]);
+				}
+				
+			}
+			if(f.r==l.r)
+			{
+				//cout<<key[f.r][(f.c+1)%5]<<key[l.r][(l.c+1)%5];
+				dec.push_back(key[f.r][(f.c-1)%5]);
+				dec.push_back(key[l.r][(l.c-1)%5]);
+			}
+			if(f.c==l.c)
+			{
+				
+				//cout<<key[(f.r+1)%5][f.c]<<key[(l.r+1)%5][l.c];
+				dec.push_back(key[(f.r-1)%5][f.c]);
+				dec.push_back(key[(l.r-1)%5][l.c]);
+			}
+			
+		}
+		for(int i=0;i<dec.size();i++)
+			cout<<dec[i];
+		
+	
 /*	for(int i=0;i<26;i++)
 		cout<<tab[i].ch<<" "<<tab[i].r<<" "<<tab[i].c<<endl;*/
 	return 0;
